@@ -1,28 +1,34 @@
-import { useState } from 'react';
-import userData from "./userData.json";
-import Profile from '../Profile/Profile';
-import FriendList from '../FriendList/FriendList';
-import friends from './friends.json';
-import TransactionHistory from '../TransactionHistory/TransactionHistory';
-import transactions from './transactions.json';
+import { useState } from "react";
+import axios from "axios";
+import css from "./App.module.css";
+import fetchGalleryApi from "../../apiGallery";
+import SearchBar from "../SearchBar/SearchBar";
+import ImageGallery from "../ImageGallery/ImageGallery";
 
-
-
-function App() {
-
+export default function App() {
+  const [images, setImages] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [error, setError] = useState(false);
+  const onSearch = async (query) => {
+    try {
+      setError(false);
+      setImages([]);
+      setLoader(true);
+      const date = await fetchGalleryApi(query);
+      setImages((prevImages) => {
+        return [...prevImages, date];
+      });
+    } catch (err) {
+      setError(true);
+      console.log(err);
+    } finally {
+      setLoader(false);
+    }
+  };
   return (
     <>
-    <Profile name={userData.username}
-            tag={userData.tag}
-            location={userData.location}
-            image={userData.avatar}
-            stats={userData.stats}
-  />
-
-      <FriendList friends={friends} />
-      <TransactionHistory items={transactions} />
+      <SearchBar onSearch={onSearch} />
+      <ImageGallery images={images} />
     </>
-  )
+  );
 }
-
-export default App
