@@ -57,6 +57,10 @@ export default function App() {
     getData();
   }, [searchQuery, page]);
 
+  const onLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
   return (
     <>
       <SearchBar onSearch={onSearch} />
@@ -66,7 +70,7 @@ export default function App() {
         <ErrorMessage />
       )}
       <Loader loading={loading} />
-      {images.length > 0 && <LoadMoreBtn setPage={setPage} page={page} />}
+      {images.length > 0 && <LoadMoreBtn onLoadMore={onLoadMore} />}
 
       <ImageModal
         isOpen={modalIsOpen}

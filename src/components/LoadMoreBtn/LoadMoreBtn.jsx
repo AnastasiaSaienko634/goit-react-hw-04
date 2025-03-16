@@ -1,12 +1,9 @@
 import css from "./LoadMoreBtn.module.css";
-import ClipLoader from "react-spinners/ClipLoader";
 
-export default function LoadMoreBtn({ setPage, page }) {
+export default function LoadMoreBtn({ onLoadMore }) {
   return (
-    <>
-      <button className={css.buttonLoadMore} onClick={() => setPage(page + 1)}>
-        Load More
-      </button>
-    </>
+    <button className={css.buttonLoadMore} onClick={onLoadMore}>
+      Load More
+    </button>
   );
 }
